@@ -6,8 +6,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -37,9 +40,10 @@ public class ProductsResources {
     // Create a products
     @PostMapping("/products")
     @ApiOperation(" Create a Product.")
-    public Products createProduct (@RequestBody Products products) {
 
-        return productsRepository.save(products);
+    public ResponseEntity<Products> createProduct (@Valid @RequestBody Products products){
+        Products productSave = productsRepository.save(products);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productSave);
     }
     // delete a products
     @DeleteMapping("/products")
